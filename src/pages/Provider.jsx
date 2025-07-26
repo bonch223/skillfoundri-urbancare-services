@@ -222,7 +222,7 @@ function Provider() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 text-white py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-emerald-900 text-white py-24 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 animate-pulse" style={{
