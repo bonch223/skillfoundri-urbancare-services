@@ -1,0 +1,88 @@
+/* Removed Tailwind v4 imports - using index.css instead */
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Testimonials Grid Layout */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Large Desktop: maintain 3 columns */
+@media (min-width: 1280px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Services Grid Layout - Force visible desktop grid */
+@media (min-width: 768px) {
+  .services-desktop-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .services-mobile-carousel {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-desktop-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* Service card styling for consistency */
+.services-desktop-grid .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.services-desktop-grid .card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.services-desktop-grid .card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.services-desktop-grid .card-body p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* Mobile services carousel */
+@media (max-width: 767px) {
+  .services-desktop-grid {
+    display: none !important;
+  }
+  .services-mobile-carousel {
+    display: block !important;
+  }
+}
