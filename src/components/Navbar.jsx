@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Sparkles, Phone, ArrowRight, Menu, X, MapPin } from 'lucide-react'
+import { useAuth } from '../contexts/AuthContext'
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
+
+  const { isAuthenticated, user } = useAuth()
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -147,28 +150,93 @@ function Navbar() {
                 <span>Book Service Now</span>
               </Link>
               
-              {/* Become a Provider Button */}
-              <Link 
-                to="/provider"
-                style={{
-                  display: window.innerWidth >= 768 ? 'flex' : 'none',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 0.75rem',
-                  fontSize: '0.875rem',
-                  fontWeight: '500',
-                  color: 'white',
-                  background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
-                  border: 'none',
-                  borderRadius: '0.5rem',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                  cursor: 'pointer',
-                  textDecoration: 'none'
-                }}
-              >
-                <span>Become a Provider</span>
-                <ArrowRight style={{ width: '16px', height: '16px' }} />
-              </Link>
+              {!isAuthenticated ? (
+                <>
+                  {/* Login Button */}
+                  <Link 
+                    to="/login"
+                    style={{
+                      display: window.innerWidth >= 768 ? 'flex' : 'none',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.5rem 0.75rem',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      color: '#2563eb',
+                      textDecoration: 'none',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    Login
+                  </Link>
+
+                  {/* Become a Provider Button */}
+                  <Link 
+                    to="/signup?type=provider"
+                    style={{
+                      display: window.innerWidth >= 768 ? 'flex' : 'none',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.5rem 0.75rem',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      color: 'white',
+                      background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      cursor: 'pointer',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    <span>Become a Provider</span>
+                    <ArrowRight style={{ width: '16px', height: '16px' }} />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  {/* Profile Link */}
+                  <Link 
+                    to="/profile"
+                    style={{
+                      display: window.innerWidth >= 768 ? 'flex' : 'none',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.5rem 0.75rem',
+                      fontSize: '0.875rem',
+                      fontWeight: '500',
+                      color: '#2563eb',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    Profile
+                  </Link>
+                  
+                  {/* Provider Dashboard for providers */}
+                  {user?.userType === 'provider' && (
+                    <Link 
+                      to="/provider"
+                      style={{
+                        display: window.innerWidth >= 768 ? 'flex' : 'none',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        padding: '0.5rem 0.75rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '500',
+                        color: 'white',
+                        background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        cursor: 'pointer',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      <span>Dashboard</span>
+                      <ArrowRight style={{ width: '16px', height: '16px' }} />
+                    </Link>
+                  )}
+                </>
+              )}
 
               {/* Mobile Menu Button */}
               <div style={{
@@ -280,30 +348,107 @@ function Navbar() {
                         <Phone style={{ width: '16px', height: '16px' }} />
                         <span>Book Service Now</span>
                       </Link>
-                      <Link 
-                        to="/provider"
-                        style={{
-                          width: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '0.5rem',
-                          padding: '0.5rem 1rem',
-                          fontSize: '0.875rem',
-                          fontWeight: '500',
-                          color: 'white',
-                          background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
-                          border: 'none',
-                          borderRadius: '0.5rem',
-                          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                          cursor: 'pointer',
-                          textDecoration: 'none'
-                        }}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <span>Become a Provider</span>
-                        <ArrowRight style={{ width: '16px', height: '16px' }} />
-                      </Link>
+
+                      {!isAuthenticated ? (
+                        <>
+                          <Link 
+                            to="/login"
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '0.5rem',
+                              padding: '0.5rem',
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: '#2563eb',
+                              backgroundColor: 'transparent',
+                              border: '1px solid #2563eb',
+                              borderRadius: '0.5rem',
+                              cursor: 'pointer',
+                              textDecoration: 'none'
+                            }}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            Login
+                          </Link>
+                          <Link 
+                            to="/signup"
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '0.5rem',
+                              padding: '0.5rem 1rem',
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: 'white',
+                              background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                              border: 'none',
+                              borderRadius: '0.5rem',
+                              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                              cursor: 'pointer',
+                              textDecoration: 'none'
+                            }}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            Signup
+                          </Link>
+                        </>
+                      ) : (
+                        <>
+                          <Link 
+                            to="/profile"
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '0.5rem',
+                              padding: '0.5rem',
+                              fontSize: '0.875rem',
+                              fontWeight: '500',
+                              color: '#2563eb',
+                              backgroundColor: 'transparent',
+                              border: '1px solid #2563eb',
+                              borderRadius: '0.5rem',
+                              cursor: 'pointer',
+                              textDecoration: 'none'
+                            }}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            Profile
+                          </Link>
+                          {user?.userType === 'provider' && (
+                            <Link 
+                              to="/provider"
+                              style={{
+                                width: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
+                                padding: '0.5rem 1rem',
+                                fontSize: '0.875rem',
+                                fontWeight: '500',
+                                color: 'white',
+                                background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                                border: 'none',
+                                borderRadius: '0.5rem',
+                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                                cursor: 'pointer',
+                                textDecoration: 'none'
+                              }}
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              <span>Provider Dashboard</span>
+                              <ArrowRight style={{ width: '16px', height: '16px' }} />
+                            </Link>
+                          )}
+                        </>
+                      )}
                     </div>
                   </div>
                 )}

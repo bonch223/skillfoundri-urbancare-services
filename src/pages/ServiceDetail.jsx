@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import BookingModal from '../components/BookingModal'
 import { 
   Home as HomeIcon, 
   Wrench, 
@@ -29,6 +30,7 @@ function ServiceDetail() {
   const { serviceId } = useParams()
   const navigate = useNavigate()
   const [selectedPackage, setSelectedPackage] = useState('basic')
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
 
   // Enhanced service data with detailed information
   const services = {
@@ -436,7 +438,10 @@ function ServiceDetail() {
 
               {/* Quick Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-xl shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center">
+                <button 
+                  onClick={() => setIsBookingModalOpen(true)}
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-xl shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center"
+                >
                   <Calendar className="w-5 h-5 mr-2" />
                   Book Now
                 </button>
@@ -527,7 +532,10 @@ function ServiceDetail() {
 
           {/* Book Selected Package */}
           <div className="text-center">
-            <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-4 px-12 rounded-xl shadow-xl transition-all duration-300 hover:scale-105 text-lg">
+            <button 
+              onClick={() => setIsBookingModalOpen(true)}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-4 px-12 rounded-xl shadow-xl transition-all duration-300 hover:scale-105 text-lg"
+            >
               Book {currentPackage.name} - {currentPackage.price}
             </button>
           </div>
@@ -622,7 +630,10 @@ function ServiceDetail() {
             Book your {service.name} service today and experience the difference quality makes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-xl shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center">
+            <button 
+              onClick={() => setIsBookingModalOpen(true)}
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-xl shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center"
+            >
               <Calendar className="w-5 h-5 mr-2" />
               Schedule Service
             </button>
@@ -633,6 +644,14 @@ function ServiceDetail() {
           </div>
         </div>
       </section>
+
+      {/* Booking Modal */}
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        service={service}
+        selectedPackage={selectedPackage}
+      />
     </div>
   )
 }
