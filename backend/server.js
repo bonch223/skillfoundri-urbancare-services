@@ -42,10 +42,18 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Connect to MongoDB
+// Optimize MongoDB connection for serverless
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/urbancare');
+    // Configure connection options for Vercel serverless
+    const options = {
+      serverSelectionTimeoutMS: 30000, // Increase timeout for serverless
+      socketTimeoutMS: 45000,
+      bufferCommands: false, // Disable mongoose buffering
+      bufferMaxEntries: 0, // Disable mongoose buffering
+    };
+    
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/urbancare', options);
     console.log('✅ Connected to MongoDB');
   } catch (err) {
     console.warn('⚠️  MongoDB connection failed:', err.message);
@@ -57,6 +65,7 @@ const connectDB = async () => {
   }
 };
 
+// Connect to database
 connectDB();
 
 // Routes

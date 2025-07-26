@@ -1,6 +1,6 @@
 // API Base URL
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://urbancare-backend-2a1j9e6ts-bonch223s-projects.vercel.app/api'
+  ? 'https://urbancare-backend-7oxzkz2z7-bonch223s-projects.vercel.app/api'
   : 'http://localhost:5000/api';
 
 // Debug log
