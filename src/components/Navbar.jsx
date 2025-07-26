@@ -123,41 +123,52 @@ function Navbar() {
 
             {/* Action Buttons */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* Call Button */}
-              <button style={{
-                display: window.innerWidth >= 1024 ? 'flex' : 'none',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.5rem 0.75rem',
-                fontSize: '0.875rem',
-                color: '#4b5563',
-                backgroundColor: 'transparent',
-                border: 'none',
-                borderRadius: '0.5rem',
-                cursor: 'pointer'
-              }}>
+              {/* Book Service Button */}
+              <Link 
+                to="/services"
+                style={{
+                  display: window.innerWidth >= 1024 ? 'flex' : 'none',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 0.75rem',
+                  fontSize: '0.875rem',
+                  color: '#4b5563',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseOver={(e) => e.target.style.color = '#2563eb'}
+                onMouseOut={(e) => e.target.style.color = '#4b5563'}
+              >
                 <Phone style={{ width: '16px', height: '16px' }} />
-                <span>Call Now</span>
-              </button>
+                <span>Book Service Now</span>
+              </Link>
               
-              {/* Get Started Button */}
-              <button style={{
-                display: window.innerWidth >= 768 ? 'flex' : 'none',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.5rem 0.75rem',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                color: 'white',
-                background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
-                border: 'none',
-                borderRadius: '0.5rem',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                cursor: 'pointer'
-              }}>
-                <span>Get Started</span>
+              {/* Become a Provider Button */}
+              <Link 
+                to="/provider"
+                style={{
+                  display: window.innerWidth >= 768 ? 'flex' : 'none',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 0.75rem',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  color: 'white',
+                  background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  cursor: 'pointer',
+                  textDecoration: 'none'
+                }}
+              >
+                <span>Become a Provider</span>
                 <ArrowRight style={{ width: '16px', height: '16px' }} />
-              </button>
+              </Link>
 
               {/* Mobile Menu Button */}
               <div style={{
@@ -247,42 +258,52 @@ function Navbar() {
                       flexDirection: 'column',
                       gap: '0.5rem'
                     }}>
-                      <button style={{
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        padding: '0.5rem',
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
-                        color: '#4b5563',
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        cursor: 'pointer'
-                      }}>
+                      <Link 
+                        to="/services"
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.5rem',
+                          padding: '0.5rem',
+                          fontSize: '0.875rem',
+                          fontWeight: '500',
+                          color: '#4b5563',
+                          backgroundColor: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          textDecoration: 'none'
+                        }}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
                         <Phone style={{ width: '16px', height: '16px' }} />
-                        <span>Call Now</span>
-                      </button>
-                      <button style={{
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        padding: '0.5rem 1rem',
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
-                        color: 'white',
-                        background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
-                        border: 'none',
-                        borderRadius: '0.5rem',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                        cursor: 'pointer'
-                      }}>
-                        <span>Get Started</span>
+                        <span>Book Service Now</span>
+                      </Link>
+                      <Link 
+                        to="/provider"
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.5rem',
+                          padding: '0.5rem 1rem',
+                          fontSize: '0.875rem',
+                          fontWeight: '500',
+                          color: 'white',
+                          background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                          border: 'none',
+                          borderRadius: '0.5rem',
+                          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                          cursor: 'pointer',
+                          textDecoration: 'none'
+                        }}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <span>Become a Provider</span>
                         <ArrowRight style={{ width: '16px', height: '16px' }} />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}
