@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const bookingSchema = new mongoose.Schema({
   customer: {
@@ -390,4 +390,4 @@ bookingSchema.statics.getUpcoming = function(userId, userType = 'customer') {
     .sort({ scheduledDate: 1, scheduledTime: 1 });
 };
 
-module.exports = mongoose.model('Booking', bookingSchema);
+export default mongoose.model('Booking', bookingSchema);

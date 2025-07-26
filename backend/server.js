@@ -30,7 +30,11 @@ app.use(limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:5174',
+    'http://localhost:5173', // Vite default port
+    'http://localhost:5174'  // Alternative port
+  ],
   credentials: true
 }));
 
@@ -39,12 +43,21 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/urbancare', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch((err) => console.error('MongoDB connection error:', err));
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/urbancare');
+    console.log('✅ Connected to MongoDB');
+  } catch (err) {
+    console.warn('⚠️  MongoDB connection failed:', err.message);
+    console.log('📝 Server will run without database - some features may be limited');
+    console.log('💡 To connect to MongoDB:');
+    console.log('   1. Install MongoDB locally, or');
+    console.log('   2. Use Docker: docker run --name urbancare-mongodb -d -p 27017:27017 mongo');
+    console.log('   3. Or set up MongoDB Atlas cloud database');
+  }
+};
+
+connectDB();
 
 // Routes
 app.use('/api/auth', authRoutes);

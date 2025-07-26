@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -25,7 +25,6 @@ const userSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    required: [true, 'Phone number is required'],
     match: [/^\+?[\d\s-()]+$/, 'Please enter a valid phone number']
   },
   address: {
@@ -38,10 +37,18 @@ const userSchema = new mongoose.Schema({
       longitude: { type: Number }
     }
   },
-  role: {
+  userType: {
     type: String,
     enum: ['customer', 'provider', 'admin'],
     default: 'customer'
+  },
+  avatar: {
+    type: String,
+    default: null
+  },
+  isActive: {
+    type: Boolean,
+    default: true
   },
   isVerified: {
     type: Boolean,
@@ -85,11 +92,12 @@ const userSchema = new mongoose.Schema({
 // Hash password before saving
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
   
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 // Compare password method
@@ -143,4 +151,4 @@ userSchema.methods.getEmailVerificationToken = function() {
   return verificationToken;
 };
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);

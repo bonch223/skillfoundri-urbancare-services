@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const packageSchema = new mongoose.Schema({
   name: {
@@ -263,4 +263,4 @@ serviceSchema.statics.search = function(searchTerm) {
   }).populate('providers', 'name rating profilePicture providerDetails.rating');
 };
 
-module.exports = mongoose.model('Service', serviceSchema);
+export default mongoose.model('Service', serviceSchema);

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { authAPI } from '../services/api.js'
 
 // Create AuthContext
 const AuthContext = createContext()
@@ -20,19 +21,26 @@ export const AuthProvider = ({ children }) => {
 
   // Check for existing auth token on app load
   useEffect(() => {
-    const checkAuthStatus = () => {
+    const checkAuthStatus = async () => {
       try {
-        const token = localStorage.getItem('urbancare_token')
-        const userData = localStorage.getItem('urbancare_user')
+        const token = localStorage.getItem('authToken')
         
-        if (token && userData) {
-          const parsedUser = JSON.parse(userData)
-          setUser(parsedUser)
+        if (token) {
+          // Verify token with backend
+          try {
+            const response = await authAPI.getProfile()
+            setUser(response.user)
+          } catch (error) {
+            console.error('Token verification failed:', error)
+            // Clear invalid token
+            localStorage.removeItem('authToken')
+            localStorage.removeItem('urbancare_user')
+          }
         }
       } catch (error) {
         console.error('Error checking auth status:', error)
         // Clear corrupted data
-        localStorage.removeItem('urbancare_token')
+        localStorage.removeItem('authToken')
         localStorage.removeItem('urbancare_user')
       } finally {
         setLoading(false)
@@ -43,37 +51,16 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   // Login function
-  const login = async (email, password, userType = 'customer') => {
+  const login = async (email, password) => {
     try {
       setLoading(true)
       setError(null)
 
-      // TODO: Replace with actual API call when backend is ready
-      const mockApiCall = new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Mock successful login
-          if (email && password) {
-            resolve({
-              user: {
-                id: Date.now(),
-                email,
-                name: email.split('@')[0],
-                userType,
-                avatar: null,
-                createdAt: new Date().toISOString()
-              },
-              token: `mock_token_${Date.now()}`
-            })
-          } else {
-            reject(new Error('Invalid credentials'))
-          }
-        }, 1000) // Simulate network delay
-      })
-
-      const response = await mockApiCall
+      // Call real API
+      const response = await authAPI.login({ email, password })
       
       // Store auth data
-      localStorage.setItem('urbancare_token', response.token)
+      localStorage.setItem('authToken', response.token)
       localStorage.setItem('urbancare_user', JSON.stringify(response.user))
       
       setUser(response.user)
@@ -92,32 +79,11 @@ export const AuthProvider = ({ children }) => {
       setLoading(true)
       setError(null)
 
-      // TODO: Replace with actual API call when backend is ready
-      const mockApiCall = new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Mock successful registration
-          if (userData.email && userData.password && userData.name) {
-            resolve({
-              user: {
-                id: Date.now(),
-                email: userData.email,
-                name: userData.name,
-                userType: userData.userType || 'customer',
-                avatar: null,
-                createdAt: new Date().toISOString()
-              },
-              token: `mock_token_${Date.now()}`
-            })
-          } else {
-            reject(new Error('Missing required fields'))
-          }
-        }, 1000)
-      })
-
-      const response = await mockApiCall
+      // Call real API
+      const response = await authAPI.register(userData)
       
       // Store auth data
-      localStorage.setItem('urbancare_token', response.token)
+      localStorage.setItem('authToken', response.token)
       localStorage.setItem('urbancare_user', JSON.stringify(response.user))
       
       setUser(response.user)
@@ -132,7 +98,7 @@ export const AuthProvider = ({ children }) => {
 
   // Logout function
   const logout = () => {
-    localStorage.removeItem('urbancare_token')
+    localStorage.removeItem('authToken')
     localStorage.removeItem('urbancare_user')
     setUser(null)
     setError(null)
