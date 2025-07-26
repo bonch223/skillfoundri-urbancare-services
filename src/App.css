@@ -51,6 +51,59 @@
   }
 }
 
+/* Navbar visibility fixes */
+.navbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  width: 100% !important;
+  min-height: 4rem !important;
+}
+
+.navbar-start,
+.navbar-center,
+.navbar-end {
+  display: flex !important;
+}
+
+/* Mobile navbar fixes */
+@media (max-width: 1023px) {
+  .navbar-center {
+    display: none !important;
+  }
+  .navbar-start .dropdown {
+    display: block !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar-start .dropdown {
+    display: none !important;
+  }
+  .navbar-center {
+    display: flex !important;
+  }
+}
+
+/* Mobile responsive fixes for Professional Home Services text */
+@media (max-width: 767px) {
+  .services-section h3 {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+  }
+}
+
 /* Service card styling for consistency */
 .services-desktop-grid .card {
   height: 100%;

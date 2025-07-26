@@ -17,10 +17,10 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg}']
       },
       manifest: {
-        name: 'Gym Management System',
-        short_name: 'GymApp',
-        description: 'Offline-first Gym Management POS',
-        theme_color: '#4338ca',
+        name: 'UrbanCare Services',
+        short_name: 'UrbanCare',
+        description: 'Quality Home Services in Tagum City',
+        theme_color: '#2563eb',
         icons: [
           {
             src: 'pwa-192x192.png',

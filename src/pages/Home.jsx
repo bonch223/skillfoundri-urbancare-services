@@ -51,13 +51,13 @@ function Home() {
                 🏆 #1 Service Platform in Tagum City
               </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+            <h1 className="hero-title text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
               Quality Home Services in{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300 animate-pulse">
                 Tagum City
               </span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto leading-relaxed">
+            <p className="hero-subtitle text-xl md:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto leading-relaxed">
               🏠 Connect with <span className="font-bold text-yellow-300">trusted, vetted service providers</span> for all your home care, renovation, and maintenance needs. Experience the convenience of professional services at your doorstep.
             </p>
             
@@ -129,7 +129,7 @@ function Home() {
       </section>
 
       {/* Enhanced Services Section with Modern Design */}
-      <section id="services" className="py-20 bg-gradient-to-br from-gray-50/50 via-white to-blue-50/30 relative overflow-hidden">
+      <section id="services" className="services-section py-20 bg-gradient-to-br from-gray-50/50 via-white to-blue-50/30 relative overflow-hidden">
         {/* Subtle Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
@@ -273,6 +273,108 @@ function Home() {
                 <h5 className="font-bold text-lg mb-2 text-gray-800">🏆 Quality Guarantee</h5>
                 <p className="text-gray-600">We guarantee satisfaction with our quality assurance and money-back policy.</p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-16">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full inline-block mb-6 shadow-lg text-sm font-semibold tracking-wide">
+              💬 Customer Reviews
+            </div>
+            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-800 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-6 leading-tight">
+              What Our Customers Say
+            </h3>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Don't just take our word for it. Here's what residents of Tagum City are saying about UrbanCare Services.
+            </p>
+          </div>
+          
+          <div className="testimonials-grid">
+            <div className="group bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 border border-gray-100/50">
+              <div className="flex items-center mb-6">
+                <div className="flex text-yellow-400 mb-2">
+                  {'★'.repeat(5)}
+                </div>
+              </div>
+              <blockquote className="text-gray-700 text-lg font-medium mb-6 leading-relaxed italic">
+                "UrbanCare made home maintenance so easy! Their cleaning service is top-notch and the staff is incredibly professional. I couldn't be happier!"
+              </blockquote>
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg mr-4">
+                  M
+                </div>
+                <div>
+                  <cite className="font-semibold text-gray-800 not-italic">Maria Santos</cite>
+                  <div className="text-sm text-gray-500">Tagum City Resident</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="group bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 border border-gray-100/50">
+              <div className="flex items-center mb-6">
+                <div className="flex text-yellow-400 mb-2">
+                  {'★'.repeat(5)}
+                </div>
+              </div>
+              <blockquote className="text-gray-700 text-lg font-medium mb-6 leading-relaxed italic">
+                "The plumbing repair service was excellent! They fixed our leak quickly and at a very reasonable price. Highly recommended!"
+              </blockquote>
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-lg mr-4">
+                  J
+                </div>
+                <div>
+                  <cite className="font-semibold text-gray-800 not-italic">Juan Dela Cruz</cite>
+                  <div className="text-sm text-gray-500">Small Business Owner</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="group bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 border border-gray-100/50">
+              <div className="flex items-center mb-6">
+                <div className="flex text-yellow-400 mb-2">
+                  {'★'.repeat(5)}
+                </div>
+              </div>
+              <blockquote className="text-gray-700 text-lg font-medium mb-6 leading-relaxed italic">
+                "Amazing handyman services! They assembled all our furniture and even helped with some electrical work. Professional and reliable!"
+              </blockquote>
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-lg mr-4">
+                  A
+                </div>
+                <div>
+                  <cite className="font-semibold text-gray-800 not-italic">Ana Rodriguez</cite>
+                  <div className="text-sm text-gray-500">Homemaker</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Call to Action */}
+          <div className="text-center mt-16">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 max-w-3xl mx-auto shadow-lg border border-gray-100/50">
+              <h4 className="text-2xl font-bold text-gray-800 mb-4">
+                🌟 Ready to Experience Quality Service?
+              </h4>
+              <p className="text-gray-600 mb-6 text-lg">
+                Join hundreds of satisfied customers in Tagum City who trust UrbanCare Services for their home needs.
+              </p>
+              <button className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3 mx-auto">
+                <Star className="w-5 h-5" />
+                <span>Book Your Service Today</span>
+                <ArrowRight className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>
