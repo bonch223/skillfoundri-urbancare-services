@@ -94,6 +94,21 @@ urbancare-services/
    http://localhost:5173
    ```
 
+## 🌐 Live Demo
+
+🚀 **Production Site:** [https://urbancare-services-ht104idjo-bonch223s-projects.vercel.app](https://urbancare-services-ht104idjo-bonch223s-projects.vercel.app)
+
+📂 **GitHub Repository:** [https://github.com/bonch223/skillfoundri-urbancare-services](https://github.com/bonch223/skillfoundri-urbancare-services)
+
+### 🔄 Deployment Information
+- **Hosting Platform:** Vercel
+- **Auto-Deployment:** Connected to GitHub main branch
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **Framework:** React with Vite (automatically detected)
+
+> 💡 **Note:** The site automatically redeploys when changes are pushed to the main branch on GitHub.
+
 ### Available Scripts
 
 - `npm run dev` - Start development server with hot reload
