@@ -51,38 +51,51 @@
   }
 }
 
-/* Navbar visibility fixes */
-.navbar {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 1000 !important;
-  display: flex !important;
-  width: 100% !important;
-  min-height: 4rem !important;
+/* Modern Navbar Styles */
+.mobile-menu-container {
+  position: relative;
+  z-index: 9999;
 }
 
-.navbar-start,
-.navbar-center,
-.navbar-end {
-  display: flex !important;
+/* Ensure proper z-index stacking */
+.mobile-menu-container .absolute {
+  z-index: 99999 !important;
 }
 
-/* Mobile navbar fixes */
-@media (max-width: 1023px) {
-  .navbar-center {
-    display: none !important;
+/* Smooth animations for mobile menu */
+.mobile-menu-container .absolute {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  .navbar-start .dropdown {
-    display: block !important;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (min-width: 1024px) {
-  .navbar-start .dropdown {
-    display: none !important;
+/* Ensure mobile menu button is clickable */
+.mobile-menu-container button {
+  position: relative;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+/* Logo animation */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
   }
-  .navbar-center {
-    display: flex !important;
+  50% {
+    opacity: .5;
   }
 }
 
@@ -101,6 +114,56 @@
   .hero-subtitle {
     font-size: 1rem !important;
     line-height: 1.5 !important;
+  }
+  
+  /* Better mobile stats layout */
+  .grid-cols-2 {
+    gap: 1rem !important;
+  }
+  
+  /* Improve mobile hero section */
+  .py-24 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+  
+  /* Better mobile padding for sections */
+  .py-20 {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+  
+  /* Mobile friendly button spacing */
+  .gap-4 {
+    gap: 0.75rem !important;
+  }
+  
+  /* Mobile friendly text sizes */
+  .text-4xl {
+    font-size: 1.75rem !important;
+  }
+  
+  .text-5xl {
+    font-size: 2rem !important;
+  }
+  
+  /* Better mobile spacing */
+  .mb-16 {
+    margin-bottom: 2rem !important;
+  }
+  
+  .mb-12 {
+    margin-bottom: 2rem !important;
+  }
+  
+  /* Mobile-friendly trust indicators */
+  .gap-6 {
+    gap: 0.75rem !important;
+  }
+  
+  /* Better testimonial cards on mobile */
+  .p-8 {
+    padding: 1.5rem !important;
   }
 }
 

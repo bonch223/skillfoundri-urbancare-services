@@ -1,9 +1,25 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Home as HomeIcon, Wrench, Hammer, Shirt, Search, CheckCircle, Clock, Star, ArrowRight, Sparkles, MapPin, Award } from 'lucide-react'
 
 function Services() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
+
+  // Map service names to URL-friendly IDs
+  const getServiceUrl = (service) => {
+    const urlMap = {
+      'Regular Home Cleaning': 'home-cleaning',
+      'Deep Cleaning Service': 'home-cleaning',
+      'Plumbing Repairs': 'plumbing-repairs',
+      'Electrical Services': 'plumbing-repairs',
+      'Furniture Assembly': 'handyman-services', 
+      'Home Painting': 'handyman-services',
+      'Laundry Service': 'laundry-care',
+      'Dry Cleaning': 'laundry-care'
+    }
+    return urlMap[service.name] || 'home-cleaning'
+  }
 
   const services = [
     {
@@ -256,10 +272,13 @@ function Services() {
                         <div className="text-2xl font-bold text-blue-600">{service.price}</div>
                         <div className="text-xs text-gray-500">Starting price</div>
                       </div>
-                      <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 flex items-center gap-2 text-sm">
+                      <Link 
+                        to={`/services/${getServiceUrl(service)}`}
+                        className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 flex items-center gap-2 text-sm"
+                      >
                         Book Now
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -288,14 +307,20 @@ function Services() {
             Can't find exactly what you're looking for? Contact us for custom service requests and quotes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center">
+            <Link 
+              to="/contact"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center"
+            >
               <MapPin className="w-5 h-5 mr-2" />
               Request Custom Service
-            </button>
-            <button className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center">
+            </Link>
+            <Link 
+              to="/contact"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center"
+            >
               <Award className="w-5 h-5 mr-2" />
               Become a Provider
-            </button>
+            </Link>
           </div>
         </div>
       </section>

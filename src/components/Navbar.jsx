@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Sparkles, Phone, ArrowRight, Menu, X } from 'lucide-react'
+import { Sparkles, Phone, ArrowRight, Menu, X, MapPin } from 'lucide-react'
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -17,78 +17,298 @@ function Navbar() {
     return location.pathname === path
   }
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [location])
+
+  // Simple toggle function
+  const toggleMenu = () => {
+    console.log('Toggling menu from', isMenuOpen, 'to', !isMenuOpen)
+    setIsMenuOpen(prev => !prev)
+  }
+
   return (
-    <div className="navbar bg-white/90 backdrop-blur-md shadow-xl sticky top-0 z-50 border-b border-blue-200/20">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <div 
-            tabIndex={0} 
-            role="button" 
-            className="btn btn-ghost lg:hidden hover:bg-blue-50"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </div>
-          {isMenuOpen && (
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-xl bg-white rounded-box w-52 border border-blue-200">
-              {navigation.map((item) => (
-                <li key={item.name}>
-                  <Link 
-                    to={item.href} 
-                    className={`hover:bg-blue-50 hover:text-blue-600 rounded-lg text-gray-700 ${
-                      isActive(item.href) ? 'bg-blue-50 text-blue-600 font-semibold' : ''
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className="flex items-center">
-          <Link 
-            to="/" 
-            className="btn btn-ghost text-xl font-bold text-blue-600 hover:bg-blue-50 transition-all duration-300"
-          >
-            <Sparkles className="w-6 h-6 mr-2 text-blue-600 animate-pulse" />
-            UrbanCare Services
-          </Link>
-          <div className="badge bg-blue-100 text-blue-600 border-blue-300 ml-2 animate-pulse">📍 Tagum City</div>
-        </div>
-      </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 gap-2">
-          {navigation.map((item) => (
-            <li key={item.name}>
+    <>
+      {/* Simplified navbar with inline styles */}
+      <nav style={{
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        borderBottom: '1px solid rgba(229, 231, 235, 0.5)',
+        position: 'sticky',
+        top: '0',
+        zIndex: '50',
+        backdropFilter: 'blur(12px)'
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 1rem'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            height: '64px'
+          }}>
+            
+            {/* Logo Section */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Link 
-                to={item.href} 
-                className={`hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 font-medium text-gray-700 ${
-                  isActive(item.href) ? 'bg-blue-50 text-blue-600 font-semibold' : ''
-                }`}
+                to="/" 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  color: '#2563eb',
+                  textDecoration: 'none'
+                }}
               >
-                {item.name}
+                <div style={{ position: 'relative' }}>
+                  <Sparkles style={{ width: '32px', height: '32px', color: '#2563eb' }} />
+                  <div style={{
+                    position: 'absolute',
+                    top: '-4px',
+                    right: '-4px',
+                    width: '12px',
+                    height: '12px',
+                    backgroundColor: '#fb923c',
+                    borderRadius: '50%'
+                  }}></div>
+                </div>
+                <div>
+                  <span style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 'bold',
+                    color: '#1f2937'
+                  }}>UrbanCare</span>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontSize: '0.75rem',
+                    color: '#6b7280'
+                  }}>
+                    <MapPin style={{ width: '12px', height: '12px', marginRight: '4px' }} />
+                    <span>Tagum City</span>
+                  </div>
+                </div>
               </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="navbar-end gap-2">
-        <button className="btn btn-ghost btn-sm hidden sm:flex items-center hover:bg-blue-50 text-gray-700">
-          <Phone className="w-4 h-4 mr-2" />
-          Call Now
-        </button>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center">
-          Get Started
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </button>
-      </div>
-    </div>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div style={{
+              display: window.innerWidth >= 768 ? 'flex' : 'none',
+              alignItems: 'center',
+              gap: '0.25rem'
+            }}>
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  style={{
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                    fontWeight: '500',
+                    color: isActive(item.href) ? '#2563eb' : '#374151',
+                    backgroundColor: isActive(item.href) ? '#eff6ff' : 'transparent',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              {/* Call Button */}
+              <button style={{
+                display: window.innerWidth >= 1024 ? 'flex' : 'none',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.5rem 0.75rem',
+                fontSize: '0.875rem',
+                color: '#4b5563',
+                backgroundColor: 'transparent',
+                border: 'none',
+                borderRadius: '0.5rem',
+                cursor: 'pointer'
+              }}>
+                <Phone style={{ width: '16px', height: '16px' }} />
+                <span>Call Now</span>
+              </button>
+              
+              {/* Get Started Button */}
+              <button style={{
+                display: window.innerWidth >= 768 ? 'flex' : 'none',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.5rem 0.75rem',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: 'white',
+                background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                border: 'none',
+                borderRadius: '0.5rem',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                cursor: 'pointer'
+              }}>
+                <span>Get Started</span>
+                <ArrowRight style={{ width: '16px', height: '16px' }} />
+              </button>
+
+              {/* Mobile Menu Button */}
+              <div style={{
+                display: window.innerWidth < 768 ? 'block' : 'none',
+                position: 'relative'
+              }}>
+                <button
+                  onClick={toggleMenu}
+                  style={{
+                    padding: '0.5rem',
+                    color: '#4b5563',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    borderRadius: '0.5rem',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    zIndex: '50'
+                  }}
+                  aria-label="Toggle menu"
+                  type="button"
+                >
+                  {isMenuOpen ? (
+                    <X style={{ width: '24px', height: '24px' }} />
+                  ) : (
+                    <Menu style={{ width: '24px', height: '24px' }} />
+                  )}
+                </button>
+
+                {/* Mobile Dropdown Menu */}
+                {isMenuOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    right: '0',
+                    top: '100%',
+                    marginTop: '0.5rem',
+                    width: '224px',
+                    backgroundColor: 'white',
+                    borderRadius: '0.75rem',
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                    border: '1px solid #f3f4f6',
+                    padding: '0.5rem 0',
+                    zIndex: '9999'
+                  }}>
+                    <div style={{
+                      padding: '0.75rem 1rem',
+                      borderBottom: '1px solid #f3f4f6'
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.875rem',
+                        color: '#6b7280'
+                      }}>
+                        <MapPin style={{ width: '16px', height: '16px' }} />
+                        <span>Tagum City Services</span>
+                      </div>
+                    </div>
+                    
+                    <div style={{ padding: '0.5rem 0' }}>
+                      {navigation.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '0.75rem 1rem',
+                            fontSize: '0.875rem',
+                            fontWeight: '500',
+                            color: isActive(item.href) ? '#2563eb' : '#374151',
+                            backgroundColor: isActive(item.href) ? '#eff6ff' : 'transparent',
+                            textDecoration: 'none',
+                            borderRight: isActive(item.href) ? '2px solid #2563eb' : 'none'
+                          }}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                    
+                    <div style={{
+                      padding: '0.75rem 1rem',
+                      borderTop: '1px solid #f3f4f6',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.5rem'
+                    }}>
+                      <button style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        padding: '0.5rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '500',
+                        color: '#4b5563',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer'
+                      }}>
+                        <Phone style={{ width: '16px', height: '16px' }} />
+                        <span>Call Now</span>
+                      </button>
+                      <button style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        padding: '0.5rem 1rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '500',
+                        color: 'white',
+                        background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                        cursor: 'pointer'
+                      }}>
+                        <span>Get Started</span>
+                        <ArrowRight style={{ width: '16px', height: '16px' }} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            backdropFilter: 'blur(4px)',
+            zIndex: '40'
+          }}
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+    </>
   )
 }
 

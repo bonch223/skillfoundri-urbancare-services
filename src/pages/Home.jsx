@@ -1,5 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Home as HomeIcon, Wrench, Hammer, Shirt, MapPin, Star, CheckCircle, Phone, Mail, Clock, Shield, Users, Award, ArrowRight, Sparkles } from 'lucide-react'
+import MobileServicesCarousel from '../components/MobileServicesCarousel'
 
 function Home() {
   const services = [
@@ -79,15 +81,21 @@ function Home() {
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 group flex items-center justify-center">
+              <Link 
+                to="/services"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 group flex items-center justify-center"
+              >
                 <HomeIcon className="w-5 h-5 mr-2 group-hover:animate-bounce" />
                 Find Services Now
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center">
+              </Link>
+              <Link 
+                to="/contact"
+                className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center"
+              >
                 <Users className="w-5 h-5 mr-2" />
                 Become a Provider
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -165,6 +173,9 @@ function Home() {
           
           {/* Service Cards with Enhanced Design */}
           <div className="relative">
+            {/* Mobile Carousel */}
+            <MobileServicesCarousel services={services} />
+            
             {/* Desktop Grid Layout */}
             <div className="services-desktop-grid mb-16">
               {services.map((service, index) => {
@@ -227,14 +238,17 @@ function Home() {
                       </ul>
                       
                       {/* Premium CTA Button */}
-                      <button className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white font-semibold py-3 px-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:scale-[1.02] flex items-center justify-center gap-2 text-sm relative overflow-hidden">
+                      <Link 
+                        to="/services"
+                        className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white font-semibold py-3 px-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group-hover:scale-[1.02] flex items-center justify-center gap-2 text-sm relative overflow-hidden"
+                      >
                         {/* Button Shimmer Effect */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         
                         <Sparkles className="w-3.5 h-3.5 group-hover:animate-spin transition-transform duration-300" />
                         <span>Explore Service</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-                      </button>
+                      </Link>
                       
                       {/* Floating Decorative Elements */}
                       <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full opacity-0 group-hover:opacity-80 group-hover:animate-pulse transition-all duration-500"></div>
@@ -370,11 +384,14 @@ function Home() {
               <p className="text-gray-600 mb-6 text-lg">
                 Join hundreds of satisfied customers in Tagum City who trust UrbanCare Services for their home needs.
               </p>
-              <button className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3 mx-auto">
+              <Link 
+                to="/services"
+                className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3 mx-auto"
+              >
                 <Star className="w-5 h-5" />
                 <span>Book Your Service Today</span>
                 <ArrowRight className="w-5 h-5" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
