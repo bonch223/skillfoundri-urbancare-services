@@ -36,7 +36,7 @@ function App() {
               <Route path="/login" element={<ProtectedRoute requireAuth={false}><Login /></ProtectedRoute>} />
               <Route path="/signup" element={<ProtectedRoute requireAuth={false}><Signup /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-              <Route path="/provider" element={<ProtectedRoute userType="provider"><Provider /></ProtectedRoute>} />
+              <Route path="/provider" element={<Provider />} />
             </Routes>
             <Footer />
             <ScrollToTopButton />

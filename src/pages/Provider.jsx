@@ -220,7 +220,222 @@ function Provider() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 relative">
+      {/* Floating Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div 
+          className="bg-white border-t border-gray-200"
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
+            borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+            boxShadow: '0 -4px 12px -2px rgba(0, 0, 0, 0.1)'
+          }}
+        >
+          <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10">
+            <div className="flex items-center justify-between gap-4 py-4">
+              {/* Social Proof Badges - Hidden on mobile, visible on desktop */}
+              <div 
+                className="hidden sm:flex items-center gap-4"
+                style={{
+                  display: window.innerWidth >= 640 ? 'flex' : 'none',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  flexShrink: 0
+                }}
+              >
+                <div 
+                  className="flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-full border border-green-200"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    backgroundColor: '#f0fdf4',
+                    padding: '0.375rem 0.75rem',
+                    borderRadius: '9999px',
+                    border: '1px solid #bbf7d0',
+                    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                  }}
+                >
+                  <div 
+                    className="flex items-center justify-center w-4 h-4 bg-green-100 rounded-full"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '16px',
+                      height: '16px',
+                      backgroundColor: '#dcfce7',
+                      borderRadius: '50%'
+                    }}
+                  >
+                    <Users 
+                      className="w-2.5 h-2.5 text-green-700"
+                      style={{
+                        width: '10px',
+                        height: '10px',
+                        color: '#15803d'
+                      }}
+                    />
+                  </div>
+                  <span 
+                    className="text-xs font-semibold text-green-800"
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      color: '#166534'
+                    }}
+                  >
+                    500+ Customers
+                  </span>
+                </div>
+                
+                <div 
+                  className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-200"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    backgroundColor: '#eff6ff',
+                    padding: '0.375rem 0.75rem',
+                    borderRadius: '9999px',
+                    border: '1px solid #bfdbfe',
+                    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                  }}
+                >
+                  <div 
+                    className="flex items-center justify-center w-4 h-4 bg-blue-100 rounded-full"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '16px',
+                      height: '16px',
+                      backgroundColor: '#dbeafe',
+                      borderRadius: '50%'
+                    }}
+                  >
+                    <Award 
+                      className="w-2.5 h-2.5 text-blue-700"
+                      style={{
+                        width: '10px',
+                        height: '10px',
+                        color: '#1d4ed8'
+                      }}
+                    />
+                  </div>
+                  <span 
+                    className="text-xs font-semibold text-blue-800"
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      color: '#1e40af'
+                    }}
+                  >
+                    Trusted Platform
+                  </span>
+                </div>
+                
+                <div 
+                  className="flex items-center gap-2 bg-yellow-50 px-3 py-1.5 rounded-full border border-yellow-200"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    backgroundColor: '#fefce8',
+                    padding: '0.375rem 0.75rem',
+                    borderRadius: '9999px',
+                    border: '1px solid #fde047',
+                    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                  }}
+                >
+                  <div 
+                    className="flex items-center justify-center w-4 h-4 bg-yellow-100 rounded-full"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '16px',
+                      height: '16px',
+                      backgroundColor: '#fef3c7',
+                      borderRadius: '50%'
+                    }}
+                  >
+                    <Star 
+                      className="w-2.5 h-2.5 text-yellow-700 fill-yellow-700"
+                      style={{
+                        width: '10px',
+                        height: '10px',
+                        color: '#a16207',
+                        fill: '#a16207'
+                      }}
+                    />
+                  </div>
+                  <span 
+                    className="text-xs font-semibold text-yellow-800"
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      color: '#92400e'
+                    }}
+                  >
+                    4.9★ Rating
+                  </span>
+                </div>
+              </div>
+              
+              {/* CTA Button - Centered on mobile */}
+              <div className="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-end">
+                <Link 
+                  to="/services"
+                  className="hidden lg:flex items-center gap-2 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
+                >
+                  <Heart className="w-4 h-4" />
+                  <span>View Services</span>
+                </Link>
+                <Link
+                  to="/signup?type=provider"
+                  className="flex items-center justify-center gap-2 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 text-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #f97316 0%, #dc2626 100%)',
+                    boxShadow: '0 4px 12px -2px rgba(249, 115, 22, 0.4)',
+                    transform: 'translateY(0)',
+                    transition: 'all 0.3s ease',
+                    color: 'white',
+                    textDecoration: 'none',
+                    border: 'none',
+                    outline: 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 8px 20px -4px rgba(249, 115, 22, 0.5)';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #ea580c 0%, #b91c1c 100%)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px -2px rgba(249, 115, 22, 0.4)';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #f97316 0%, #dc2626 100%)';
+                  }}
+                >
+                  <Sparkles className="w-4 h-4" style={{ color: 'white' }} />
+                  <span 
+                    className="font-semibold"
+                    style={{ 
+                      color: 'white', 
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    Apply to Become a Provider
+                  </span>
+                  <ArrowRight className="w-4 h-4" style={{ color: 'white' }} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-emerald-900 text-white py-24 overflow-hidden">
         {/* Background Pattern */}
@@ -277,7 +492,7 @@ function Provider() {
               justifyContent: 'center'
             }}>
               <Link 
-                to="/contact"
+                to="/signup?type=provider"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -293,8 +508,8 @@ function Provider() {
                   transition: 'all 0.3s ease',
                   transform: 'scale(1)'
                 }}
-                onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
-                onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)' }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
               >
                 <Users style={{ width: '20px', height: '20px' }} />
                 Apply Now
@@ -317,12 +532,12 @@ function Provider() {
                   transition: 'all 0.3s ease'
                 }}
                 onMouseOver={(e) => {
-                  e.target.style.backgroundColor = 'white'
-                  e.target.style.color = '#1e40af'
+                  e.currentTarget.style.backgroundColor = 'white'
+                  e.currentTarget.style.color = '#1e40af'
                 }}
                 onMouseOut={(e) => {
-                  e.target.style.backgroundColor = 'transparent'
-                  e.target.style.color = 'white'
+                  e.currentTarget.style.backgroundColor = 'transparent'
+                  e.currentTarget.style.color = 'white'
                 }}
               >
                 <Phone style={{ width: '20px', height: '20px' }} />
@@ -1203,7 +1418,7 @@ function Provider() {
               justifyContent: 'center'
             }}>
               <Link 
-                to="/contact"
+                to="/signup?type=provider"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -1219,8 +1434,8 @@ function Provider() {
                   transition: 'all 0.3s ease',
                   fontSize: '1.125rem'
                 }}
-                onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
-                onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)' }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
               >
                 <Sparkles style={{ width: '20px', height: '20px' }} />
                 Apply to Become a Provider
@@ -1244,12 +1459,12 @@ function Provider() {
                   fontSize: '1.125rem'
                 }}
                 onMouseOver={(e) => {
-                  e.target.style.backgroundColor = 'white'
-                  e.target.style.color = '#1e40af'
+                  e.currentTarget.style.backgroundColor = 'white'
+                  e.currentTarget.style.color = '#1e40af'
                 }}
                 onMouseOut={(e) => {
-                  e.target.style.backgroundColor = 'transparent'
-                  e.target.style.color = 'white'
+                  e.currentTarget.style.backgroundColor = 'transparent'
+                  e.currentTarget.style.color = 'white'
                 }}
               >
                 <Heart style={{ width: '20px', height: '20px' }} />

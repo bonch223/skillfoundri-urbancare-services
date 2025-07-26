@@ -172,7 +172,7 @@ function Navbar() {
 
                   {/* Become a Provider Button */}
                   <Link 
-                    to="/signup?type=provider"
+                    to="/provider"
                     style={{
                       display: window.innerWidth >= 768 ? 'flex' : 'none',
                       alignItems: 'center',
