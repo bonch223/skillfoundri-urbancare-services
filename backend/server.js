@@ -45,16 +45,17 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Optimize MongoDB connection for serverless
 const connectDB = async () => {
   try {
-    // Configure connection options for Vercel serverless
+    // Configure connection options for Vercel serverless - removed deprecated options
     const options = {
       serverSelectionTimeoutMS: 30000, // Increase timeout for serverless
       socketTimeoutMS: 45000,
-      bufferCommands: false, // Disable mongoose buffering
-      bufferMaxEntries: 0, // Disable mongoose buffering
+      // Removed bufferCommands and bufferMaxEntries as they're deprecated
     };
     
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/urbancare', options);
     console.log('✅ Connected to MongoDB');
+    console.log(`📊 Database: ${mongoose.connection.name}`);
+    console.log(`🔗 Connection state: ${mongoose.connection.readyState}`);
   } catch (err) {
     console.warn('⚠️  MongoDB connection failed:', err.message);
     console.log('📝 Server will run without database - some features may be limited');
