@@ -113,9 +113,19 @@ router.post('/login', [
   body('password').exists().withMessage('Password is required')
 ], async (req, res) => {
   try {
+    // Check database connection first
+    if (mongoose.connection.readyState !== 1) {
+      console.error('Database not connected during login attempt');
+      return res.status(500).json({ 
+        message: 'Database connection error. Please try again later.',
+        debug: process.env.NODE_ENV === 'development' ? 'MongoDB not connected' : undefined
+      });
+    }
+
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Login validation failed:', errors.array());
       return res.status(400).json({ 
         message: 'Validation failed', 
         errors: errors.array() 
@@ -123,18 +133,25 @@ router.post('/login', [
     }
 
     const { email, password } = req.body;
+    console.log(`Login attempt for email: ${email}`);
 
     // Find user by email
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
+      console.log(`User not found for email: ${email}`);
       return res.status(401).json({ message: 'Invalid email or password' });
     }
+
+    console.log(`User found: ${user.email}, checking password...`);
 
     // Check password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
+      console.log(`Invalid password for user: ${email}`);
       return res.status(401).json({ message: 'Invalid email or password' });
     }
+
+    console.log(`Password valid for user: ${email}, generating token...`);
 
     // Generate JWT token
     const token = generateToken(user._id);
@@ -148,6 +165,8 @@ router.post('/login', [
       createdAt: user.createdAt
     };
 
+    console.log(`Login successful for user: ${email}`);
+
     res.json({
       message: 'Login successful',
       token,
@@ -156,7 +175,10 @@ router.post('/login', [
 
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error during login' });
+    res.status(500).json({ 
+      message: 'Server error during login',
+      debug: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 

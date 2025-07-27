@@ -1,7 +1,15 @@
-// API Base URL
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://urbancare-backend-7oxzkz2z7-bonch223s-projects.vercel.app/api'
-  : 'http://localhost:5000/api';
+// API Base URL - Updated for better environment detection
+const API_BASE_URL = (() => {
+  // Check if we're in production by looking at the window location
+  const isProduction = typeof window !== 'undefined' && 
+    (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1');
+    
+  if (isProduction) {
+    return 'https://urbancare-backend-7oxzkz2z7-bonch223s-projects.vercel.app/api';
+  } else {
+    return 'http://localhost:5000/api';
+  }
+})();
 
 // Debug log
 console.log('🔗 API Base URL:', API_BASE_URL);
