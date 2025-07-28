@@ -1,9 +1,10 @@
 import React from 'react';
+import { Menu } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import CustomerDashboard from './CustomerDashboard';
 import ProviderDashboard from './ProviderDashboard';
 
-function MainContent() {
+function MainContent({ darkMode, sidebarCollapsed, toggleMobileSidebar }) {
   const { user } = useAuth();
   
   // Check if user exists and determine if they are a provider
@@ -11,7 +12,19 @@ function MainContent() {
 
   return (
     <div className="main-content">
-      {isProvider ? <ProviderDashboard /> : <CustomerDashboard />}
+      {/* Mobile Menu Button */}
+      <button 
+        className="mobile-menu-button"
+        onClick={toggleMobileSidebar}
+        aria-label="Toggle menu"
+      >
+        <Menu size={24} />
+      </button>
+      
+      {/* Dashboard Content */}
+      <div className="main-content-inner">
+        {isProvider ? <ProviderDashboard /> : <CustomerDashboard />}
+      </div>
     </div>
   );
 }

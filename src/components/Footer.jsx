@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Sparkles, MapPin, Phone, Mail, Facebook, Instagram, Twitter } from 'lucide-react'
 
-function Footer() {
+function Footer({ sidebarCollapsed }) {
   return (
-    <footer className="bg-gray-900 text-white py-16">
+    <footer className={`bg-gray-900 text-white py-16 ${sidebarCollapsed ? 'footer-with-sidebar sidebar-collapsed' : 'footer-with-sidebar'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}

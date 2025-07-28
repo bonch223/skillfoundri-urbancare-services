@@ -211,7 +211,7 @@ function Navbar() {
                   </Link>
                   
                   {/* User Menu Dropdown */}
-                  <div style={{ position: 'relative', display: window.innerWidth >= 768 ? 'block' : 'none' }}>
+                  <div data-user-menu style={{ position: 'relative', display: window.innerWidth >= 768 ? 'block' : 'none' }}>
                     <button
                       onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                       style={{
