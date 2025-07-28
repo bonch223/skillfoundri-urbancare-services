@@ -439,7 +439,7 @@ const BookingModal = ({ isOpen, onClose, service, selectedPackage }) => {
           ) : (
             <div className="flex justify-center space-x-4">
               <button
-                onClick={() => navigate('/profile')}
+                onClick={() => navigate('/dashboard')}
                 className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 View My Bookings

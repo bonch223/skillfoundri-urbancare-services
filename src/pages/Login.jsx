@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../contexts/ToastContext'
 import { Mail, Lock, LogIn } from 'lucide-react'
@@ -6,6 +7,7 @@ import { Mail, Lock, LogIn } from 'lucide-react'
 const Login = () => {
   const { login, error, loading } = useAuth()
   const { showSuccess, showError } = useToast()
+  const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -13,10 +15,19 @@ const Login = () => {
     const password = event.target.password.value
 
     try {
-      await login(email, password)
+      console.log('🚀 Starting login process...')
+      const user = await login(email, password)  // Capture returned user
+      console.log('✅ Login successful, user:', user)
       showSuccess('Welcome back! Login successful.')
+      
+      // Redirect to dashboard after successful login
+      console.log('🔄 Navigating to dashboard...')
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true })
+        console.log('✅ Navigation complete')
+      }, 100)
     } catch (error) {
-      console.error('Login failed:', error)
+      console.error('❌ Login failed:', error)
       showError('Login failed. Please check your credentials and try again.')
     }
   }

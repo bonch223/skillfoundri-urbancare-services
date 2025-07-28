@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../contexts/ToastContext'
 import { useLocation } from 'react-router-dom'
@@ -7,6 +8,7 @@ import { User, Mail, Lock, UserPlus, Briefcase, Users } from 'lucide-react'
 const Signup = () => {
   const { register, error, loading } = useAuth()
   const { showSuccess, showError } = useToast()
+  const navigate = useNavigate()
   const location = useLocation()
   const [selectedUserType, setSelectedUserType] = useState('customer')
 
@@ -30,10 +32,19 @@ const Signup = () => {
     }
 
     try {
+      console.log('🚀 Starting registration process...')
       await register(userData)
+      console.log('✅ Registration successful')
       showSuccess(`Welcome to UrbanCare! Your ${userData.userType} account has been created successfully.`)
+      
+      // Redirect to dashboard after successful registration
+      console.log('🔄 Navigating to dashboard...')
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true })
+        console.log('✅ Navigation complete')
+      }, 100)
     } catch (error) {
-      console.error('Registration failed:', error)
+      console.error('❌ Registration failed:', error)
       showError('Registration failed. Please check your information and try again.')
     }
   }

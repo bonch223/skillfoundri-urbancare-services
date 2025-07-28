@@ -30,7 +30,12 @@ const ProtectedRoute = ({
 
   // If user is authenticated but shouldn't be (e.g., login page when already logged in)
   if (!requireAuth && isAuthenticated) {
-    const from = location.state?.from?.pathname || '/'
+    const from = location.state?.from?.pathname || '/dashboard'
+    console.log('🔐 ProtectedRoute: Authenticated user trying to access non-auth page', {
+      currentPath: location.pathname,
+      fromState: location.state?.from?.pathname,
+      redirectingTo: from
+    })
     return <Navigate to={from} replace />
   }
 

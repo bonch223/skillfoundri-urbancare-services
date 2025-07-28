@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { Sparkles, Phone, ArrowRight, Menu, X, MapPin } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Sparkles, ArrowRight, Menu, X, MapPin, User, Settings, LogOut, LayoutDashboard, Phone } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated, user, logout } = useAuth()
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -20,10 +22,23 @@ function Navbar() {
     return location.pathname === path
   }
 
-  // Close mobile menu when route changes
+  // Close menus when route changes
   useEffect(() => {
     setIsMenuOpen(false)
+    setIsUserMenuOpen(false)
   }, [location])
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isUserMenuOpen && !event.target.closest('[data-user-menu]')) {
+        setIsUserMenuOpen(false)
+      }
+    }
+    
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isUserMenuOpen])
 
   // Simple toggle function
   const toggleMenu = () => {
@@ -126,30 +141,6 @@ function Navbar() {
 
             {/* Action Buttons */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {/* Book Service Button */}
-              <Link 
-                to="/services"
-                style={{
-                  display: window.innerWidth >= 1024 ? 'flex' : 'none',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 0.75rem',
-                  fontSize: '0.875rem',
-                  color: '#4b5563',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  borderRadius: '0.5rem',
-                  cursor: 'pointer',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseOver={(e) => e.target.style.color = '#2563eb'}
-                onMouseOut={(e) => e.target.style.color = '#4b5563'}
-              >
-                <Phone style={{ width: '16px', height: '16px' }} />
-                <span>Book Service Now</span>
-              </Link>
-              
               {!isAuthenticated ? (
                 <>
                   {/* Login Button */}
@@ -163,6 +154,8 @@ function Navbar() {
                       fontSize: '0.875rem',
                       fontWeight: '500',
                       color: '#2563eb',
+                      border: '1px solid #2563eb',
+                      borderRadius: '0.5rem',
                       textDecoration: 'none',
                       transition: 'all 0.2s ease'
                     }}
@@ -170,9 +163,9 @@ function Navbar() {
                     Login
                   </Link>
 
-                  {/* Become a Provider Button */}
+                  {/* Sign Up Button */}
                   <Link 
-                    to="/provider"
+                    to="/signup"
                     style={{
                       display: window.innerWidth >= 768 ? 'flex' : 'none',
                       alignItems: 'center',
@@ -189,15 +182,14 @@ function Navbar() {
                       textDecoration: 'none'
                     }}
                   >
-                    <span>Become a Provider</span>
-                    <ArrowRight style={{ width: '16px', height: '16px' }} />
+                    <span>Sign Up</span>
                   </Link>
                 </>
               ) : (
                 <>
-                  {/* Profile Link */}
+                  {/* Dashboard Button for authenticated users */}
                   <Link 
-                    to="/profile"
+                    to="/dashboard"
                     style={{
                       display: window.innerWidth >= 768 ? 'flex' : 'none',
                       alignItems: 'center',
@@ -205,36 +197,147 @@ function Navbar() {
                       padding: '0.5rem 0.75rem',
                       fontSize: '0.875rem',
                       fontWeight: '500',
-                      color: '#2563eb',
-                      textDecoration: 'none'
+                      color: isActive('/dashboard') ? 'white' : '#2563eb',
+                      background: isActive('/dashboard') ? 'linear-gradient(to right, #2563eb, #1d4ed8)' : 'transparent',
+                      border: isActive('/dashboard') ? 'none' : '1px solid #2563eb',
+                      borderRadius: '0.5rem',
+                      cursor: 'pointer',
+                      textDecoration: 'none',
+                      transition: 'all 0.2s ease'
                     }}
                   >
-                    Profile
+                    <LayoutDashboard style={{ width: '16px', height: '16px' }} />
+                    <span>Dashboard</span>
                   </Link>
                   
-                  {/* Provider Dashboard for providers */}
-                  {user?.userType === 'provider' && (
-                    <Link 
-                      to="/provider"
+                  {/* User Menu Dropdown */}
+                  <div style={{ position: 'relative', display: window.innerWidth >= 768 ? 'block' : 'none' }}>
+                    <button
+                      onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                       style={{
-                        display: window.innerWidth >= 768 ? 'flex' : 'none',
+                        display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',
-                        padding: '0.5rem 0.75rem',
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
-                        color: 'white',
-                        background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                        padding: '0.5rem',
+                        backgroundColor: isUserMenuOpen ? '#eff6ff' : 'transparent',
                         border: 'none',
                         borderRadius: '0.5rem',
                         cursor: 'pointer',
-                        textDecoration: 'none'
+                        transition: 'all 0.2s ease'
                       }}
                     >
-                      <span>Dashboard</span>
-                      <ArrowRight style={{ width: '16px', height: '16px' }} />
-                    </Link>
-                  )}
+                      <div style={{
+                        width: '32px',
+                        height: '32px',
+                        backgroundColor: '#2563eb',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white',
+                        fontSize: '0.875rem',
+                        fontWeight: '500'
+                      }}>
+                        {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                      </div>
+                    </button>
+                    
+                    {/* User Dropdown Menu */}
+                    {isUserMenuOpen && (
+                      <div style={{
+                        position: 'absolute',
+                        right: '0',
+                        top: '100%',
+                        marginTop: '0.5rem',
+                        width: '200px',
+                        backgroundColor: 'white',
+                        borderRadius: '0.75rem',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                        border: '1px solid #f3f4f6',
+                        padding: '0.5rem 0',
+                        zIndex: '9999'
+                      }}>
+                        <div style={{
+                          padding: '0.75rem 1rem',
+                          borderBottom: '1px solid #f3f4f6'
+                        }}>
+                          <div style={{
+                            fontSize: '0.875rem',
+                            fontWeight: '600',
+                            color: '#1f2937'
+                          }}>
+                            {user?.name || 'User'}
+                          </div>
+                          <div style={{
+                            fontSize: '0.75rem',
+                            color: '#6b7280',
+                            textTransform: 'capitalize'
+                          }}>
+                            {user?.userType || 'User'}
+                          </div>
+                        </div>
+                        
+                        <div style={{ padding: '0.5rem 0' }}>
+                          <Link
+                            to="/profile"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.75rem',
+                              padding: '0.75rem 1rem',
+                              fontSize: '0.875rem',
+                              color: '#374151',
+                              textDecoration: 'none',
+                              transition: 'all 0.2s'
+                            }}
+                            onMouseOver={(e) => {
+                              e.target.style.backgroundColor = '#f9fafb'
+                              e.target.style.color = '#2563eb'
+                            }}
+                            onMouseOut={(e) => {
+                              e.target.style.backgroundColor = 'transparent'
+                              e.target.style.color = '#374151'
+                            }}
+                          >
+                            <User style={{ width: '16px', height: '16px' }} />
+                            <span>Profile</span>
+                          </Link>
+                          
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false)
+                              logout()
+                              navigate('/')
+                            }}
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.75rem',
+                              padding: '0.75rem 1rem',
+                              fontSize: '0.875rem',
+                              color: '#dc2626',
+                              backgroundColor: 'transparent',
+                              border: 'none',
+                              textAlign: 'left',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s'
+                            }}
+                            onMouseOver={(e) => {
+                              e.target.style.backgroundColor = '#fef2f2'
+                            }}
+                            onMouseOut={(e) => {
+                              e.target.style.backgroundColor = 'transparent'
+                            }}
+                          >
+                            <LogOut style={{ width: '16px', height: '16px' }} />
+                            <span>Logout</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </>
               )}
 

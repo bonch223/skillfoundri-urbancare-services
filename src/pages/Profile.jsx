@@ -1,14 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../contexts/ToastContext'
 
 const Profile = () => {
   const { user, logout, updateProfile, loading } = useAuth()
   const { showSuccess, showInfo } = useToast()
+  const navigate = useNavigate()
+
+  // Redirect to dashboard if user prefers
+  const goToDashboard = () => {
+    navigate('/dashboard')
+  }
 
   const handleLogout = () => {
     logout()
     showInfo('You have been logged out successfully. See you soon!')
+    navigate('/')
   }
 
   const handleSubmit = async (event) => {
@@ -85,6 +93,13 @@ const Profile = () => {
             />
           </div>
           <div className="space-y-3">
+            <button
+              type="button"
+              onClick={goToDashboard}
+              className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Go to Dashboard
+            </button>
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
