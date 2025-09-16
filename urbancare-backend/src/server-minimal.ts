@@ -272,9 +272,42 @@ app.post('/api/tasks', (req, res) => {
 app.post('/api/bids', (req, res) => {
   logRequest(req, 'BID_CREATION');
   
+  const taskId = req.body.taskId || 1;
+  
+  // Check if task already has an accepted bid
+  const hasAcceptedBid = mockBids.some(bid => 
+    bid.taskId === taskId && bid.status === 'accepted'
+  );
+  
+  if (hasAcceptedBid) {
+    logActivity('BID_CREATION_FAILED', {
+      taskId: taskId,
+      reason: 'Task already has an accepted bid'
+    }, 'PROVIDER');
+    
+    return res.status(400).json({
+      success: false,
+      error: { message: 'This task already has an accepted bid' }
+    });
+  }
+  
+  // Check if task is still open
+  const task = mockTasks.find(t => t.id === taskId);
+  if (task && task.status !== 'open') {
+    logActivity('BID_CREATION_FAILED', {
+      taskId: taskId,
+      reason: `Task status is ${task.status}, not open`
+    }, 'PROVIDER');
+    
+    return res.status(400).json({
+      success: false,
+      error: { message: `Cannot bid on task with status: ${task.status}` }
+    });
+  }
+  
   const newBid: Bid = {
     id: `bid-${mockBids.length + 1}`,
-    taskId: req.body.taskId || 1,
+    taskId: taskId,
     providerId: 2,
     amount: req.body.amount || 50,
     message: req.body.message || 'I can help with this task',
@@ -308,7 +341,7 @@ app.get('/api/bids/task/:taskId', (req, res) => {
 // Accept bid endpoint
 app.post('/api/tasks/:taskId/bids/:bidId/accept', (req, res) => {
   const bidId = req.params.bidId;
-  const taskId = req.params.taskId;
+  const taskId = parseInt(req.params.taskId);
   const message = req.body.message || '';
 
   logRequest(req, 'BID_ACCEPTANCE');
@@ -327,13 +360,21 @@ app.post('/api/tasks/:taskId/bids/:bidId/accept', (req, res) => {
     });
   }
 
+  // Update bid status
   const bid = mockBids[bidIndex];
   mockBids[bidIndex].status = 'accepted';
+  
+  // Update task status to 'in_progress' when bid is accepted
+  const taskIndex = mockTasks.findIndex(task => task.id === taskId);
+  if (taskIndex !== -1) {
+    mockTasks[taskIndex].status = 'in_progress';
+  }
   
   logActivity('BID_ACCEPTED', {
     bid: bid,
     taskId: taskId,
-    message: message
+    message: message,
+    taskStatusUpdated: 'in_progress'
   }, 'CLIENT');
   
   res.json({ 
@@ -399,9 +440,16 @@ app.post('/api/payments/pending', (req, res) => {
   
   mockPayments.push(newPayment);
   
+  // Update task status to 'payment_pending' when payment is created
+  const taskIndex = mockTasks.findIndex(task => task.id === newPayment.taskId);
+  if (taskIndex !== -1) {
+    mockTasks[taskIndex].status = 'payment_pending';
+  }
+  
   logActivity('PAYMENT_CREATED', {
     payment: newPayment,
-    totalPayments: mockPayments.length
+    totalPayments: mockPayments.length,
+    taskStatusUpdated: 'payment_pending'
   }, 'CLIENT');
   
   res.json({
@@ -435,11 +483,18 @@ app.post('/api/payments/:paymentId/submit', (req, res) => {
   mockPayments[paymentIndex].paymentMethod = paymentMethod;
   mockPayments[paymentIndex].paymentReference = paymentReference;
   
+  // Update task status to 'payment_submitted' when payment is submitted
+  const taskIndex = mockTasks.findIndex(task => task.id === payment.taskId);
+  if (taskIndex !== -1) {
+    mockTasks[taskIndex].status = 'payment_submitted';
+  }
+  
   logActivity('PAYMENT_SUBMITTED', {
     payment: payment,
     paymentMethod: paymentMethod,
     paymentReference: paymentReference,
-    screenshotUrl: screenshotUrl
+    screenshotUrl: screenshotUrl,
+    taskStatusUpdated: 'payment_submitted'
   }, 'CLIENT');
   
   res.json({
@@ -469,11 +524,24 @@ app.patch('/api/payments/:paymentId/release', (req, res) => {
     });
   }
   
+  const payment = mockPayments[paymentIndex];
   mockPayments[paymentIndex].status = 'released';
+  
+  // Update task status to 'completed' when payment is released
+  const taskIndex = mockTasks.findIndex(task => task.id === payment.taskId);
+  if (taskIndex !== -1) {
+    mockTasks[taskIndex].status = 'completed';
+  }
+  
+  logActivity('PAYMENT_RELEASED', {
+    payment: payment,
+    reason: reason,
+    taskStatusUpdated: 'completed'
+  }, 'ADMIN');
   
   res.json({
     success: true,
-    data: { paymentId }
+    data: { paymentId, message: 'Payment released successfully' }
   });
 });
 
