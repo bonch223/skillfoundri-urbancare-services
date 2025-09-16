@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon src/server-simple.ts",
     "dev:production": "nodemon src/server-production.ts",
-    "build": "tsc",
-    "start": "node dist/server-production-simple.js",
+    "build": "tsc -p tsconfig.production.json",
+    "start": "node dist/server-minimal.js",
     "start:simple": "node dist/server-simple.js",
     "start:mongodb": "node server-mongodb.js",
     "migrate": "npm run build && node dist/database/migrate.js",
