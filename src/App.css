@@ -1,0 +1,364 @@
+/* Removed Tailwind v4 imports - using index.css instead */
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Testimonials Grid Layout */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Large Desktop: maintain 3 columns */
+@media (min-width: 1280px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Services Grid Layout - Force visible desktop grid */
+@media (min-width: 768px) {
+  .services-desktop-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .services-mobile-carousel {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-desktop-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* Modern Navbar Styles */
+.mobile-menu-container {
+  position: relative;
+  z-index: 9999;
+}
+
+/* Ensure proper z-index stacking */
+.mobile-menu-container .absolute {
+  z-index: 99999 !important;
+}
+
+/* Smooth animations for mobile menu */
+.mobile-menu-container .absolute {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure mobile menu button is clickable */
+.mobile-menu-container button {
+  position: relative;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+/* Logo animation */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* Mobile responsive fixes for Professional Home Services text */
+@media (max-width: 767px) {
+  .services-section h3 {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+  }
+  
+  /* Better mobile stats layout */
+  .grid-cols-2 {
+    gap: 1rem !important;
+  }
+  
+  /* Improve mobile hero section */
+  .py-24 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+  
+  /* Better mobile padding for sections */
+  .py-20 {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+  
+  /* Mobile friendly button spacing */
+  .gap-4 {
+    gap: 0.75rem !important;
+  }
+  
+  /* Mobile friendly text sizes */
+  .text-4xl {
+    font-size: 1.75rem !important;
+  }
+  
+  .text-5xl {
+    font-size: 2rem !important;
+  }
+  
+  /* Better mobile spacing */
+  .mb-16 {
+    margin-bottom: 2rem !important;
+  }
+  
+  .mb-12 {
+    margin-bottom: 2rem !important;
+  }
+  
+  /* Mobile-friendly trust indicators */
+  .gap-6 {
+    gap: 0.75rem !important;
+  }
+  
+  /* Better testimonial cards on mobile */
+  .p-8 {
+    padding: 1.5rem !important;
+  }
+}
+
+/* Service card styling for consistency */
+.services-desktop-grid .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.services-desktop-grid .card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.services-desktop-grid .card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.services-desktop-grid .card-body p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* Mobile services carousel */
+@media (max-width: 767px) {
+  .services-desktop-grid {
+    display: none !important;
+  }
+  .services-mobile-carousel {
+    display: block !important;
+  }
+}
+
+/* Provider Page Grid Layouts with Explicit CSS */
+.provider-benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .provider-benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .provider-benefits-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.provider-requirements-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .provider-requirements-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.provider-services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .provider-services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.provider-steps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .provider-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .provider-steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Provider contact info layout */
+.provider-contact-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .provider-contact-grid {
+    flex-direction: row;
+  }
+}
+
+/* Provider CTA buttons layout */
+.provider-cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .provider-cta-buttons {
+    flex-direction: row;
+  }
+}
+
+/* Provider hero trust indicators */
+.provider-trust-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Provider card hover effects */
+.provider-card {
+  transition: all 0.5s ease;
+  transform: scale(1);
+}
+
+.provider-card:hover {
+  transform: scale(1.03) translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.provider-step-card {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.provider-step-card:hover {
+  transform: translateY(-5px);
+}
+
+.provider-service-card {
+  transition: all 0.5s ease;
+  transform: translateY(0);
+}
+
+.provider-service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Mobile responsive improvements for provider page */
+@media (max-width: 767px) {
+  .provider-trust-indicators {
+    gap: 0.75rem;
+  }
+  
+  .provider-contact-grid {
+    gap: 1rem;
+  }
+  
+  .provider-cta-buttons {
+    gap: 0.75rem;
+  }
+  
+  /* Smaller text on mobile for provider page */
+  .provider-hero-title {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+  }
+  
+  .provider-hero-subtitle {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+  }
+  
+  .provider-section-title {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+}
