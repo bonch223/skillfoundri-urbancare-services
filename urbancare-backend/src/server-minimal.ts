@@ -283,6 +283,96 @@ app.post('/api/tasks/:taskId/bids/:bidId/reject', (req, res) => {
 });
 
 // ===========================================
+// PAYMENT ENDPOINTS
+// ===========================================
+
+interface Payment {
+  id: string;
+  taskId: number;
+  bidId: string;
+  amount: number;
+  status: string;
+  paymentMethod?: string;
+  paymentReference?: string;
+  createdAt: string;
+}
+
+const mockPayments: Payment[] = [];
+
+// Create pending payment
+app.post('/api/payments/pending', (req, res) => {
+  const { taskId, bidId, amount } = req.body;
+  
+  const newPayment: Payment = {
+    id: `payment-${mockPayments.length + 1}`,
+    taskId: taskId || 1,
+    bidId: bidId || 'bid-1',
+    amount: amount || 100,
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+  
+  mockPayments.push(newPayment);
+  
+  res.json({
+    success: true,
+    data: { paymentId: newPayment.id }
+  });
+});
+
+// Submit payment receipt
+app.post('/api/payments/:paymentId/submit', (req, res) => {
+  const { paymentId } = req.params;
+  const { paymentMethod, paymentReference, screenshotUrl } = req.body;
+  
+  const paymentIndex = mockPayments.findIndex(p => p.id === paymentId);
+  if (paymentIndex === -1) {
+    return res.status(404).json({
+      success: false,
+      error: { message: 'Payment not found' }
+    });
+  }
+  
+  mockPayments[paymentIndex].status = 'submitted';
+  mockPayments[paymentIndex].paymentMethod = paymentMethod;
+  mockPayments[paymentIndex].paymentReference = paymentReference;
+  
+  res.json({
+    success: true,
+    data: { paymentId }
+  });
+});
+
+// Get payment history
+app.get('/api/payments/history', (req, res) => {
+  res.json({
+    success: true,
+    data: mockPayments
+  });
+});
+
+// Release payment
+app.patch('/api/payments/:paymentId/release', (req, res) => {
+  const { paymentId } = req.params;
+  const { reason } = req.body;
+  
+  const paymentIndex = mockPayments.findIndex(p => p.id === paymentId);
+  if (paymentIndex === -1) {
+    return res.status(404).json({
+      success: false,
+      error: { message: 'Payment not found' }
+    });
+  }
+  
+  mockPayments[paymentIndex].status = 'released';
+  
+  res.json({
+    success: true,
+    data: { paymentId }
+  });
+});
+
+// ===========================================
 // ERROR HANDLING
 // ===========================================
 
@@ -298,7 +388,11 @@ app.use('*', (req, res) => {
         '/api/auth/register',
         '/api/auth/me',
         '/api/tasks',
-        '/api/bids'
+        '/api/bids',
+        '/api/payments/pending',
+        '/api/payments/:paymentId/submit',
+        '/api/payments/history',
+        '/api/payments/:paymentId/release'
       ]
     }
   });
