@@ -298,13 +298,15 @@ interface Payment {
 }
 
 const mockPayments: Payment[] = [];
+let paymentCounter = 0;
 
 // Create pending payment
 app.post('/api/payments/pending', (req, res) => {
   const { taskId, bidId, amount } = req.body;
   
+  paymentCounter++;
   const newPayment: Payment = {
-    id: `payment-${mockPayments.length + 1}`,
+    id: `payment-${paymentCounter}`,
     taskId: taskId || 1,
     bidId: bidId || 'bid-1',
     amount: amount || 100,
@@ -369,6 +371,30 @@ app.patch('/api/payments/:paymentId/release', (req, res) => {
   res.json({
     success: true,
     data: { paymentId }
+  });
+});
+
+// ===========================================
+// RESET ENDPOINTS
+// ===========================================
+
+// Reset all data (keep users only)
+app.post('/api/admin/reset', (req, res) => {
+  // Clear all data arrays
+  mockTasks.length = 0;
+  mockBids.length = 0;
+  mockPayments.length = 0;
+  paymentCounter = 0;
+  
+  res.json({
+    success: true,
+    message: 'All data cleared successfully. Users remain intact.',
+    data: {
+      users: mockUsers.length,
+      tasks: mockTasks.length,
+      bids: mockBids.length,
+      payments: mockPayments.length
+    }
   });
 });
 
@@ -441,6 +467,7 @@ app.use('*', (req, res) => {
         '/api/payments/:paymentId/submit',
         '/api/payments/history',
         '/api/payments/:paymentId/release',
+        '/api/admin/reset',
         '/api/admin/payments/pending',
         '/api/admin/payments/:paymentId/verify'
       ]
