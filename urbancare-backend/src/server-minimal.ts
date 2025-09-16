@@ -6,6 +6,31 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
+// ===========================================
+// LOGGING UTILITIES
+// ===========================================
+
+const logActivity = (action: string, details: any, user?: string) => {
+  const timestamp = new Date().toISOString();
+  const userInfo = user ? `[${user}]` : '[SYSTEM]';
+  console.log(`\n🔍 ${userInfo} ${action} - ${timestamp}`);
+  console.log(`📋 Details:`, JSON.stringify(details, null, 2));
+  console.log('─'.repeat(80));
+};
+
+const logRequest = (req: express.Request, action: string) => {
+  const user = req.headers.authorization ? 'AUTHENTICATED_USER' : 'ANONYMOUS';
+  logActivity(action, {
+    method: req.method,
+    url: req.url,
+    body: req.body,
+    headers: {
+      'user-agent': req.headers['user-agent'],
+      'content-type': req.headers['content-type']
+    }
+  }, user);
+};
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -103,8 +128,16 @@ const mockBids: Bid[] = [];
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
   
+  logRequest(req, 'LOGIN_ATTEMPT');
+  
   // Mock login
   if (email === 'client1@urbancare.com' && password === 'password123') {
+    logActivity('LOGIN_SUCCESS', {
+      user: mockUsers[0],
+      role: 'client',
+      email: email
+    }, email);
+    
     return res.json({
       success: true,
       data: {
@@ -115,6 +148,12 @@ app.post('/api/auth/login', (req, res) => {
   }
   
   if (email === 'provider1@urbancare.com' && password === 'password123') {
+    logActivity('LOGIN_SUCCESS', {
+      user: mockUsers[1],
+      role: 'provider',
+      email: email
+    }, email);
+    
     return res.json({
       success: true,
       data: {
@@ -124,6 +163,11 @@ app.post('/api/auth/login', (req, res) => {
     });
   }
   
+  logActivity('LOGIN_FAILED', {
+    email: email,
+    reason: 'Invalid credentials'
+  }, email);
+  
   res.status(401).json({
     success: false,
     error: { message: 'Invalid email or password' }
@@ -132,6 +176,8 @@ app.post('/api/auth/login', (req, res) => {
 
 app.post('/api/auth/register', (req, res) => {
   const { email, password, name, userType } = req.body;
+  
+  logRequest(req, 'REGISTRATION_ATTEMPT');
   
   // Mock registration
   const newUser: User = {
@@ -143,6 +189,11 @@ app.post('/api/auth/register', (req, res) => {
   };
   
   mockUsers.push(newUser);
+  
+  logActivity('REGISTRATION_SUCCESS', {
+    newUser: newUser,
+    totalUsers: mockUsers.length
+  }, email);
   
   res.json({
     success: true,
@@ -188,6 +239,8 @@ app.get('/api/tasks', (req, res) => {
 });
 
 app.post('/api/tasks', (req, res) => {
+  logRequest(req, 'TASK_CREATION');
+  
   const newTask: Task = {
     id: mockTasks.length + 1,
     title: req.body.title || 'Sample Task',
@@ -201,6 +254,11 @@ app.post('/api/tasks', (req, res) => {
   
   mockTasks.push(newTask);
   
+  logActivity('TASK_CREATED', {
+    task: newTask,
+    totalTasks: mockTasks.length
+  }, 'CLIENT');
+  
   res.json({
     success: true,
     data: newTask
@@ -212,6 +270,8 @@ app.post('/api/tasks', (req, res) => {
 // ===========================================
 
 app.post('/api/bids', (req, res) => {
+  logRequest(req, 'BID_CREATION');
+  
   const newBid: Bid = {
     id: `bid-${mockBids.length + 1}`,
     taskId: req.body.taskId || 1,
@@ -223,6 +283,11 @@ app.post('/api/bids', (req, res) => {
   };
   
   mockBids.push(newBid);
+  
+  logActivity('BID_CREATED', {
+    bid: newBid,
+    totalBids: mockBids.length
+  }, 'PROVIDER');
   
   res.json({
     success: true,
@@ -243,17 +308,33 @@ app.get('/api/bids/task/:taskId', (req, res) => {
 // Accept bid endpoint
 app.post('/api/tasks/:taskId/bids/:bidId/accept', (req, res) => {
   const bidId = req.params.bidId;
+  const taskId = req.params.taskId;
   const message = req.body.message || '';
+
+  logRequest(req, 'BID_ACCEPTANCE');
 
   const bidIndex = mockBids.findIndex(bid => bid.id === bidId);
   if (bidIndex === -1) {
+    logActivity('BID_ACCEPTANCE_FAILED', {
+      bidId: bidId,
+      taskId: taskId,
+      reason: 'Bid not found'
+    }, 'CLIENT');
+    
     return res.status(404).json({ 
       success: false, 
       error: { message: 'Bid not found' } 
     });
   }
 
+  const bid = mockBids[bidIndex];
   mockBids[bidIndex].status = 'accepted';
+  
+  logActivity('BID_ACCEPTED', {
+    bid: bid,
+    taskId: taskId,
+    message: message
+  }, 'CLIENT');
   
   res.json({ 
     success: true, 
@@ -304,6 +385,8 @@ let paymentCounter = 0;
 app.post('/api/payments/pending', (req, res) => {
   const { taskId, bidId, amount } = req.body;
   
+  logRequest(req, 'PAYMENT_CREATION');
+  
   paymentCounter++;
   const newPayment: Payment = {
     id: `payment-${paymentCounter}`,
@@ -316,6 +399,11 @@ app.post('/api/payments/pending', (req, res) => {
   
   mockPayments.push(newPayment);
   
+  logActivity('PAYMENT_CREATED', {
+    payment: newPayment,
+    totalPayments: mockPayments.length
+  }, 'CLIENT');
+  
   res.json({
     success: true,
     data: { paymentId: newPayment.id }
@@ -327,17 +415,32 @@ app.post('/api/payments/:paymentId/submit', (req, res) => {
   const { paymentId } = req.params;
   const { paymentMethod, paymentReference, screenshotUrl } = req.body;
   
+  logRequest(req, 'PAYMENT_SUBMISSION');
+  
   const paymentIndex = mockPayments.findIndex(p => p.id === paymentId);
   if (paymentIndex === -1) {
+    logActivity('PAYMENT_SUBMISSION_FAILED', {
+      paymentId: paymentId,
+      reason: 'Payment not found'
+    }, 'CLIENT');
+    
     return res.status(404).json({
       success: false,
       error: { message: 'Payment not found' }
     });
   }
   
+  const payment = mockPayments[paymentIndex];
   mockPayments[paymentIndex].status = 'submitted';
   mockPayments[paymentIndex].paymentMethod = paymentMethod;
   mockPayments[paymentIndex].paymentReference = paymentReference;
+  
+  logActivity('PAYMENT_SUBMITTED', {
+    payment: payment,
+    paymentMethod: paymentMethod,
+    paymentReference: paymentReference,
+    screenshotUrl: screenshotUrl
+  }, 'CLIENT');
   
   res.json({
     success: true,
@@ -380,21 +483,37 @@ app.patch('/api/payments/:paymentId/release', (req, res) => {
 
 // Reset all data (keep users only)
 app.post('/api/admin/reset', (req, res) => {
+  logRequest(req, 'ADMIN_RESET');
+  
+  const beforeReset = {
+    users: mockUsers.length,
+    tasks: mockTasks.length,
+    bids: mockBids.length,
+    payments: mockPayments.length
+  };
+  
   // Clear all data arrays
   mockTasks.length = 0;
   mockBids.length = 0;
   mockPayments.length = 0;
   paymentCounter = 0;
   
+  const afterReset = {
+    users: mockUsers.length,
+    tasks: mockTasks.length,
+    bids: mockBids.length,
+    payments: mockPayments.length
+  };
+  
+  logActivity('ADMIN_RESET_COMPLETED', {
+    beforeReset: beforeReset,
+    afterReset: afterReset
+  }, 'ADMIN');
+  
   res.json({
     success: true,
     message: 'All data cleared successfully. Users remain intact.',
-    data: {
-      users: mockUsers.length,
-      tasks: mockTasks.length,
-      bids: mockBids.length,
-      payments: mockPayments.length
-    }
+    data: afterReset
   });
 });
 
@@ -504,6 +623,15 @@ app.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔍 Health check: http://localhost:${PORT}/health`);
   console.log(`📱 API Base: /api/*`);
+  console.log('─'.repeat(80));
+  console.log('📊 ACTIVITY LOGGING ENABLED - All user actions will be logged below');
+  console.log('─'.repeat(80));
+  
+  logActivity('SERVER_STARTED', {
+    port: PORT,
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString()
+  }, 'SYSTEM');
 });
 
 export default app;
