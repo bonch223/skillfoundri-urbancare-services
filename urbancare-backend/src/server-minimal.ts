@@ -373,6 +373,54 @@ app.patch('/api/payments/:paymentId/release', (req, res) => {
 });
 
 // ===========================================
+// ADMIN ENDPOINTS
+// ===========================================
+
+// Get pending payments for admin
+app.get('/api/admin/payments/pending', (req, res) => {
+  const pendingPayments = mockPayments.filter(p => p.status === 'pending' || p.status === 'submitted');
+  
+  res.json({
+    success: true,
+    data: pendingPayments.map(p => ({
+      _id: p.id,
+      taskId: { _id: p.taskId.toString(), title: `Task ${p.taskId}` },
+      bidId: { _id: p.bidId },
+      amount: p.amount,
+      status: p.status,
+      paymentMethod: p.paymentMethod,
+      paymentReference: p.paymentReference,
+      createdAt: p.createdAt
+    }))
+  });
+});
+
+// Verify payment (approve/reject)
+app.post('/api/admin/payments/:paymentId/verify', (req, res) => {
+  const { paymentId } = req.params;
+  const { action } = req.body;
+  
+  const paymentIndex = mockPayments.findIndex(p => p.id === paymentId);
+  if (paymentIndex === -1) {
+    return res.status(404).json({
+      success: false,
+      error: { message: 'Payment not found' }
+    });
+  }
+  
+  if (action === 'approve') {
+    mockPayments[paymentIndex].status = 'approved';
+  } else if (action === 'reject') {
+    mockPayments[paymentIndex].status = 'rejected';
+  }
+  
+  res.json({
+    success: true,
+    data: { paymentId, status: mockPayments[paymentIndex].status }
+  });
+});
+
+// ===========================================
 // ERROR HANDLING
 // ===========================================
 
@@ -392,7 +440,9 @@ app.use('*', (req, res) => {
         '/api/payments/pending',
         '/api/payments/:paymentId/submit',
         '/api/payments/history',
-        '/api/payments/:paymentId/release'
+        '/api/payments/:paymentId/release',
+        '/api/admin/payments/pending',
+        '/api/admin/payments/:paymentId/verify'
       ]
     }
   });
